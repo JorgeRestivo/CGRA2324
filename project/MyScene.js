@@ -5,6 +5,8 @@ import { MyStem } from "./MyStem.js";
 import { MyPetal } from "./MyPetal.js";
 import { MyBeeSphere } from "./MyBeeSphere.js";
 import { MyFlower } from "./MyFlower.js";
+import { MyGarden } from "./MyGarden.js";
+
 
 export class MyScene extends CGFscene {
     constructor() {
@@ -33,6 +35,7 @@ export class MyScene extends CGFscene {
         this.beeSphere = new MyBeeSphere(this,1,1,1);
         this.stem = new MyStem(this, 16, 20, 10.0, 0.7);
         this.flower = new MyFlower(this, 16, 20, 10.0, 0.7);
+        this.garden = new MyGarden(this,5,5);
 
         //Objects connected to MyInterface
         this.displayAxis = true;
@@ -102,7 +105,8 @@ export class MyScene extends CGFscene {
         this.popMatrix();
 
         this.pushMatrix();
-        this.flower.display();
+        //this.flower.display();
+        this.garden.display();
         this.popMatrix();
 
     }

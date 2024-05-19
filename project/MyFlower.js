@@ -4,7 +4,7 @@ import { MyCone } from './MyCone.js';
 import { MyPetal } from './MyPetal.js';
 
 export class MyFlower extends CGFobject {
-    constructor(scene, slices, stacks, height, radius) {
+    constructor(scene, slices, stacks, height, radius, x ,z) {
         super(scene);
         this.slices = slices;
         this.stacks = stacks;
@@ -14,7 +14,8 @@ export class MyFlower extends CGFobject {
         this.spacing = 0; // Spacing between cylinders
         this.cylinders = [];
         this.numPetals = 12; // Number of petals
-        this.scene.gl.disable(this.scene.gl.CULL_FACE);
+        this.x = x;
+        this.z = z;
 
 
         // Create instances of MyCylinder for stacking
@@ -42,6 +43,10 @@ export class MyFlower extends CGFobject {
     }
 
     display() {
+
+        this.scene.pushMatrix();
+        this.scene.translate(this.x, 0, this.z); // Apply translation
+
         // Display cylinders (stems)
         for (let i = 0; i < this.numCylinders - 1; i++) {
             this.scene.pushMatrix();
@@ -92,10 +97,12 @@ export class MyFlower extends CGFobject {
             this.scene.rotate((2 * Math.PI / this.numPetals) * i, 0, 1, 0); // Rotate petal around the cone
             this.scene.translate(0, this.radius * 3 - 0.7, this.radius * 4); // Translate petal to the correct position, increased separation
             this.scene.rotate(Math.PI / 8, 1, 0, 0); // Incline petal towards the sky
-            this.scene.scale(2, 2, 2); // Adjust scaling if needed
+            this.scene.scale(2.5, 2, 2); // Adjust scaling if needed
             this.scene.setDiffuse(1, 0, 0, 0); // Set petal color
             this.petals[i].display(); // Display the petal
             this.scene.popMatrix();
         }
+
+        this.scene.popMatrix(); // Pop the matrix for the flower's translation
     }
 }
