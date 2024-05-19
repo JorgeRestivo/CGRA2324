@@ -25,6 +25,10 @@ export class MyInterface extends CGFinterface {
         // Create a folder for garden settings
         const gardenFolder = this.gui.addFolder('Garden Settings');
 
+        this.gui.add(this.scene, 'displayGarden').name('Display Garden');
+        this.gui.add(this.scene, 'displayRocks').name('Display Rocks');
+
+
         // Add controls for numRows and numCols
         const numRowsControl = gardenFolder.add(this.scene, 'numRows', 5, 15).step(1).name('Number of Rows');
         const numColsControl = gardenFolder.add(this.scene, 'numCols', 5, 15).step(1).name('Number of Columns');

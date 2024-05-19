@@ -40,12 +40,12 @@ export class MyScene extends CGFscene {
         this.beeSphere = new MyBeeSphere(this,1,1,1);
         this.stem = new MyStem(this, 16, 20, 10.0, 0.7);
         this.garden = new MyGarden(this,this.numRows,this.numCols);
-        this.rock = new MyRock(this, 4, 4, "textures/rock.jpg");
-        this.rockSet = new MyRockSet(this, 7, 4);
         this.gardenRocks = new MyGardenRocks(this);
 
         //Objects connected to MyInterface
         this.displayAxis = true;
+        this.displayGarden = false;
+        this.displayRocks = false;
         this.scaleFactor = 1;
 
         this.enableTextures(true);
@@ -116,15 +116,17 @@ export class MyScene extends CGFscene {
         this.plane.display();
         this.popMatrix();
 
-        this.pushMatrix();
-        this.garden.display();
-        this.popMatrix();
 
+        if(this.displayGarden){
+            this.garden.display();
+        }
 
-        this.pushMatrix();
-        this.scale(3,2,2.5);
-        this.gardenRocks.display();
-        this.popMatrix();
+        if(this.displayRocks){
+            this.pushMatrix();
+            this.scale(3,2,2.5);
+            this.gardenRocks.display();
+            this.popMatrix();
+        }
 
     }
 }
