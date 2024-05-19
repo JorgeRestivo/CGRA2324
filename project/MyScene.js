@@ -104,7 +104,6 @@ export class MyScene extends CGFscene {
         this.popMatrix();
 
         this.pushMatrix();
-        //this.flower.display();
         this.garden.display();
         this.popMatrix();
 

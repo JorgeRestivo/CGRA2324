@@ -47,13 +47,17 @@ export class MyFlower extends CGFobject {
         // Scale the cone to adjust its radius
         this.scene.scale(coneRadius, coneRadius, coneRadius);
 
-
         // Create instances of MyPetal
+
+        // Generate a random texture index for the flower petals
+        this.randomTextureIndex = Math.floor(Math.random() * 5);
+
         this.petals = [];
         for (let i = 0; i < this.numPetals; i++) {
-            const petal = new MyPetal(scene, this.radius, this.radius * 2);
+            const petal = new MyPetal(scene, this.radius, this.radius * 2, this.randomTextureIndex);
             this.petals.push(petal);
         }
+
     }
 
     display() {
@@ -118,7 +122,7 @@ export class MyFlower extends CGFobject {
             this.scene.translate(0, this.radius * 3 - 0.7, this.radius * 4); // Translate petal to the correct position, increased separation
             this.scene.rotate(Math.PI / 5, 1, 0, 0); // Incline petal towards the sky
             this.scene.scale(2.5, 2, 2); // Adjust scaling if needed
-            this.scene.setDiffuse(1, 0, 0, 0); // Set petal color
+            this.scene.setDiffuse(1,1,1,1);
             this.petals[i].display(); // Display the petal
             this.scene.popMatrix();
         }
