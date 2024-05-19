@@ -1,71 +1,68 @@
 import { CGFobject } from '../lib/CGF.js';
-import { MyCylinder } from './MyCylinder.js';
-import { MyCone } from './MyCone.js';
 
 export class MyStem extends CGFobject {
-    constructor(scene, slices, stacks, height, radius) {
+    constructor(scene, slices, stacks) {
         super(scene);
         this.slices = slices;
         this.stacks = stacks;
-        this.height = height;
-        this.radius = radius;
-        this.numCylinders = 3; // Number of cylinders to stack
-        this.spacing = 0; // Spacing between cylinders
-        this.cylinders = [];
-
-        // Create instances of MyCylinder for stacking
-        for (let i = 0; i < this.numCylinders; i++) {
-            // Generate a random inclination angle for each stem
-            const randomInclination = Math.random() * Math.PI / 4; // Random inclination between 0 and 45 degrees (in radians)
-            
-            // Create a new cylinder instance with the random inclination angle
-            const cylinder = new MyCylinder(scene, slices, stacks);
-            cylinder.inclination = randomInclination; // Set the inclination property of the cylinder
-            
-            // Push the cylinder instance into the cylinders array
-            this.cylinders.push(cylinder);
-        }
-
-        // Create a cone for the end of the stem
-        this.cone = new MyCone(scene, slices, stacks);
+        this.initBuffers();
     }
 
-    display() {
-        // Position and scale the cylinders (stems) vertically with spacing
-        for (let i = 0; i < this.numCylinders - 1; i++) {
-            this.scene.pushMatrix();
-            const translation = (this.height + this.spacing) * i;
-            this.scene.translate(0, translation, 0);
-            this.scene.setDiffuse(0, 1, 0, 0);
-            this.scene.rotate(-Math.PI / 2, 1, 0, 0);
-            this.scene.scale(this.radius, this.radius, this.height);
-            this.cylinders[i].display(); // Display the cylinder
-            this.scene.popMatrix();
+    initBuffers() {
+
+        this.vertices = [];
+        this.indices = [];
+        this.normals = [];
+        
+        for (let z = 0 ; z <= this.stacks ; z += 1) {
+            this.vertices.push(1, 0, z / this.stacks);
+            this.normals.push(1, 0, 0);
         }
 
-        // Display the last cylinder with its random inclination
-        const lastIndex = this.numCylinders - 1;
-        const translation = (this.height + this.spacing) * lastIndex;
+        for (let i = 1 ; i <= this.slices ; i++) {
 
-        this.scene.pushMatrix();
-        this.scene.translate(0, translation-0.3, 0);
-        this.scene.rotate(-Math.PI / 2 + this.cylinders[lastIndex].inclination, 1, 0, 0); // Apply the random inclination
-        this.scene.scale(this.radius, this.radius, this.height);
-        this.cylinders[lastIndex].display(); // Display the last cylinder
-        this.scene.popMatrix();
+            let angle = 2 * Math.PI * i / this.slices;
+            let x = Math.cos(angle);
+            let y = Math.sin(angle);
 
-        // Calculate the translation for the cone to align with the top of the last cylinder
-        const coneTranslationX = 0; // No translation in X-axis
-        const coneTranslationY = translation + this.height * Math.cos(this.cylinders[lastIndex].inclination);
-        const coneTranslationZ = -this.height * Math.sin(this.cylinders[lastIndex].inclination);
+            let vector_size = Math.sqrt(x * x + y * y);
+            if (i != this.slices) {    
+                this.vertices.push(x, y, 0);
+                this.normals.push(x / vector_size, y / vector_size, 0);
+            }
 
-        this.scene.pushMatrix();
-        this.scene.translate(coneTranslationX, coneTranslationY-0.3, -coneTranslationZ);
-        this.scene.setDiffuse(0, 1, 0, 0);
-        this.scene.rotate(-Math.PI / 2 + this.cylinders[lastIndex].inclination, 1, 0, 0); // Apply the random inclination
-        this.scene.rotate(-Math.PI/2 , 1, 0, 0); // Rotate cone to align with cylinder
-        this.scene.scale(this.radius * 3, this.radius * 3, this.radius * 3); // Scale the cone to match the cylinder
-        this.cone.display(); // Display the cone
-        this.scene.popMatrix();
+            for (let j = 1 ; j <= this.stacks ; j++) {
+                
+                if (i != this.slices) {
+
+                    let z = j / this.stacks;
+                    this.vertices.push(x, y, z);
+                    this.normals.push(x / vector_size, y / vector_size, 0);
+                    
+                    let points = this.vertices.length / 3;
+                    let indexC = points - 2;
+                    let indexD = points - 1;
+                    let indexB = indexD - (this.stacks + 1);
+                    let indexA = indexB - 1;
+                    this.indices.push(indexA, indexC, indexD, indexA, indexD, indexB);
+
+                } else {
+
+                    let points = this.vertices.length / 3;
+                
+                    let indexC = j - 1;
+                    let indexD = j;
+                    let indexB = points - this.stacks - 1 + j;
+                    let indexA = indexB - 1;
+                    this.indices.push(indexA, indexC, indexD, indexA, indexD, indexB);
+                }
+            }
+        }
+
+        this.primitiveType = this.scene.gl.TRIANGLES;
+        this.initGLBuffers();
+    }
+
+    updateBuffers(complexity) {
     }
 }

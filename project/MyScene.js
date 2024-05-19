@@ -4,6 +4,7 @@ import { MyPlane } from "./MyPlane.js";
 import { MyStem } from "./MyStem.js";
 import { MyPetal } from "./MyPetal.js";
 import { MyBeeSphere } from "./MyBeeSphere.js";
+import { MyFlower } from "./MyFlower.js";
 
 export class MyScene extends CGFscene {
     constructor() {
@@ -31,6 +32,7 @@ export class MyScene extends CGFscene {
         this.petal = new MyPetal(this, 4, 6);
         this.beeSphere = new MyBeeSphere(this,1,1,1);
         this.stem = new MyStem(this, 16, 20, 10.0, 0.7);
+        this.flower = new MyFlower(this, 16, 20, 10.0, 0.7);
 
         //Objects connected to MyInterface
         this.displayAxis = true;
@@ -100,8 +102,9 @@ export class MyScene extends CGFscene {
         this.popMatrix();
 
         this.pushMatrix();
-        this.translate(0, -this.stem.height / 2, 0); // Position the stem appropriately
-        this.stem.display();
+        this.flower.display();
         this.popMatrix();
+
+        this.petal.display();
     }
 }
