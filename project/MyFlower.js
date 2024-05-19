@@ -93,10 +93,10 @@ export class MyFlower extends CGFobject {
         // Display petals around the cone
         for (let i = 0; i < this.numPetals; i++) {
             this.scene.pushMatrix();
-            this.scene.translate(0, this.numCylinders*this.height - 0.7, 0); // Translate petal downwards
+            this.scene.translate(0, this.numCylinders*this.height , 0); // Translate petal downwards
             this.scene.rotate((2 * Math.PI / this.numPetals) * i, 0, 1, 0); // Rotate petal around the cone
             this.scene.translate(0, this.radius * 3 - 0.7, this.radius * 4); // Translate petal to the correct position, increased separation
-            this.scene.rotate(Math.PI / 8, 1, 0, 0); // Incline petal towards the sky
+            this.scene.rotate(Math.PI / 5, 1, 0, 0); // Incline petal towards the sky
             this.scene.scale(2.5, 2, 2); // Adjust scaling if needed
             this.scene.setDiffuse(1, 0, 0, 0); // Set petal color
             this.petals[i].display(); // Display the petal
