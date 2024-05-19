@@ -4,7 +4,6 @@ import { MyPlane } from "./MyPlane.js";
 import { MyStem } from "./MyStem.js";
 import { MyPetal } from "./MyPetal.js";
 import { MyBeeSphere } from "./MyBeeSphere.js";
-import { MyFlower } from "./MyFlower.js";
 import { MyGarden } from "./MyGarden.js";
 
 

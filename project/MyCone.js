@@ -17,18 +17,19 @@ export class MyCone extends CGFobject {
         this.vertices = [];
         this.indices = [];
         this.normals = [];
+        this.texCoords = []; // Add texture coordinates array
     
         var ang = 0;
-        var alphaAng = 2*Math.PI/this.slices;
+        var alphaAng = 2 * Math.PI / this.slices;
     
-        for(var i = 0; i < this.slices; i++){
+        for (var i = 0; i < this.slices; i++) {
     
             var x = Math.cos(ang);
             var z = -Math.sin(ang);
     
             this.vertices.push(x, 0, z);
     
-            var normalY = Math.cos(Math.PI/4.0); // Adjust this value according to the angle of the cone
+            var normalY = Math.cos(Math.PI / 4.0); // Adjust this value according to the angle of the cone
     
             // Calculate the normal for the current vertex
             var normal = [x, normalY, z];
@@ -36,12 +37,18 @@ export class MyCone extends CGFobject {
     
             this.normals.push(...normal);
     
+            // Calculate texture coordinates (u, v)
+            var u = 0.5 + 0.5 * Math.cos(ang); // Map x to u in [0,1]
+            var v = 0.5 + 0.5 * Math.sin(ang); // Map z to v in [0,1]
+            this.texCoords.push(u, v);
+    
             ang += alphaAng;
         }
     
         // Add the vertex and normal for the apex of the cone
         this.vertices.push(0, 1, 0);
         this.normals.push(0, 1, 0);
+        this.texCoords.push(0.5, 0.5); // Texture coordinate for the apex
     
         // Generate indices
         for (var i = 0; i < this.slices; i++) {
@@ -51,6 +58,7 @@ export class MyCone extends CGFobject {
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
+    
     
     /**
      * Called when user interacts with GUI to change object's complexity.
