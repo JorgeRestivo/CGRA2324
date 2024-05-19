@@ -5,6 +5,9 @@ import { MyStem } from "./MyStem.js";
 import { MyPetal } from "./MyPetal.js";
 import { MyBeeSphere } from "./MyBeeSphere.js";
 import { MyGarden } from "./MyGarden.js";
+import { MyRock } from "./MyRock.js";
+import { MyRockSet } from "./MyRockSet.js";
+import { MyGardenRocks } from "./MyGardenRocks.js";
 
 
 export class MyScene extends CGFscene {
@@ -37,6 +40,9 @@ export class MyScene extends CGFscene {
         this.beeSphere = new MyBeeSphere(this,1,1,1);
         this.stem = new MyStem(this, 16, 20, 10.0, 0.7);
         this.garden = new MyGarden(this,this.numRows,this.numCols);
+        this.rock = new MyRock(this, 4, 4, "textures/rock.jpg");
+        this.rockSet = new MyRockSet(this, 7, 4);
+        this.gardenRocks = new MyGardenRocks(this);
 
         //Objects connected to MyInterface
         this.displayAxis = true;
@@ -51,6 +57,7 @@ export class MyScene extends CGFscene {
 
     initTextures() {
         this.texture = new CGFtexture(this, "images/terrain.jpg");
+        this.rockTexture = new CGFtexture(this, "textures/rock.jpg");
         this.panoramatexture = new CGFtexture(this, "images/panorama4.jpg");
         this.appearance = new CGFappearance(this);
         this.appearance.setTexture(this.texture);
@@ -110,7 +117,10 @@ export class MyScene extends CGFscene {
         this.popMatrix();
 
         this.pushMatrix();
-        this.garden.display();
+        //this.garden.display();
+        //this.rock.display();
+        this.gardenRocks.display();
+        //this.rockSet.display();
         this.popMatrix();
 
     }
