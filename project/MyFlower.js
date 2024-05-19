@@ -58,9 +58,15 @@ export class MyFlower extends CGFobject {
             this.petals.push(petal);
         }
 
+
         this.texture1 = new CGFtexture(scene, 'textures/receptacle.jpg');
         this.appearance1 = new CGFappearance(scene);
         this.appearance1.setTexture(this.texture1);
+
+
+        this.texture2 = new CGFtexture(scene, 'textures/stem.jpg');
+        this.appearance2 = new CGFappearance(scene);
+        this.appearance2.setTexture(this.texture2);
 
     }
 
@@ -77,6 +83,7 @@ export class MyFlower extends CGFobject {
             this.scene.setDiffuse(0, 1, 0, 0);
             this.scene.rotate(-Math.PI / 2, 1, 0, 0);
             this.scene.scale(this.radius, this.radius, this.height);
+            this.appearance2.apply();
             this.cylinders[i].display(); // Display the cylinder
             this.scene.popMatrix();
         }
@@ -101,10 +108,10 @@ export class MyFlower extends CGFobject {
         // Display the green cone
         this.scene.pushMatrix();
         this.scene.translate(coneTranslationX, coneTranslationY, coneTranslationZ);
-        this.scene.setDiffuse(0, 1, 0, 0);
         this.scene.rotate(-Math.PI / 2 + this.cylinders[lastIndex].inclination, 1, 0, 0); // Apply the random inclination
         this.scene.rotate(-Math.PI / 2, 1, 0, 0); // Rotate cone to align with cylinder
         this.scene.scale(this.radius * 3, this.radius * 3, this.radius * 3); // Scale the cone to match the cylinder
+        this.appearance2.apply();
         this.cone.display(); // Display the cone
         this.scene.popMatrix();
 
