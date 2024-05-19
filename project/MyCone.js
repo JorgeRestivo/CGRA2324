@@ -17,24 +17,41 @@ export class MyCone extends CGFobject {
         this.vertices = [];
         this.indices = [];
         this.normals = [];
-
+    
         var ang = 0;
         var alphaAng = 2*Math.PI/this.slices;
-
+    
         for(var i = 0; i < this.slices; i++){
-
-            this.vertices.push(Math.cos(ang), 0, -Math.sin(ang));
-            this.indices.push(i, (i+1) % this.slices, this.slices);
-            this.normals.push(Math.cos(ang), Math.cos(Math.PI/4.0), -Math.sin(ang));
-            ang+=alphaAng;
+    
+            var x = Math.cos(ang);
+            var z = -Math.sin(ang);
+    
+            this.vertices.push(x, 0, z);
+    
+            var normalY = Math.cos(Math.PI/4.0); // Adjust this value according to the angle of the cone
+    
+            // Calculate the normal for the current vertex
+            var normal = [x, normalY, z];
+            vec3.normalize(normal, normal);
+    
+            this.normals.push(...normal);
+    
+            ang += alphaAng;
         }
-        this.vertices.push(0,1,0);
-        this.normals.push(0,1,0);
-
-
+    
+        // Add the vertex and normal for the apex of the cone
+        this.vertices.push(0, 1, 0);
+        this.normals.push(0, 1, 0);
+    
+        // Generate indices
+        for (var i = 0; i < this.slices; i++) {
+            this.indices.push(i, (i + 1) % this.slices, this.slices);
+        }
+    
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
+    
     /**
      * Called when user interacts with GUI to change object's complexity.
      * @param {integer} complexity - changes number of slices

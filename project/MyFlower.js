@@ -1,6 +1,7 @@
 import { CGFobject } from '../lib/CGF.js';
 import { MyCylinder } from './MyCylinder.js';
 import { MyCone } from './MyCone.js';
+import { MyPetal } from './MyPetal.js';
 
 export class MyFlower extends CGFobject {
     constructor(scene, slices, stacks, height, radius) {
@@ -12,6 +13,9 @@ export class MyFlower extends CGFobject {
         this.numCylinders = 3; // Number of cylinders to stack
         this.spacing = 0; // Spacing between cylinders
         this.cylinders = [];
+        this.numPetals = 12; // Number of petals
+        this.scene.gl.disable(this.scene.gl.CULL_FACE);
+
 
         // Create instances of MyCylinder for stacking
         for (let i = 0; i < this.numCylinders; i++) {
@@ -28,6 +32,13 @@ export class MyFlower extends CGFobject {
 
         // Create a cone for the end of the stem
         this.cone = new MyCone(scene, slices, stacks);
+
+        // Create instances of MyPetal
+        this.petals = [];
+        for (let i = 0; i < this.numPetals; i++) {
+            const petal = new MyPetal(scene, radius, radius * 2);
+            this.petals.push(petal);
+        }
     }
 
     display() {
@@ -49,33 +60,42 @@ export class MyFlower extends CGFobject {
 
         this.scene.pushMatrix();
         this.scene.translate(0, translation, 0);
-        this.scene.rotate(-Math.PI / 2 + this.cylinders[lastIndex].inclination, 1, 0, 0); // Apply the random inclination
+        this.scene.rotate(-Math.PI / 2 , 1, 0, 0); // Apply the random inclination
         this.scene.scale(this.radius, this.radius, this.height);
         this.cylinders[lastIndex].display(); // Display the last cylinder
         this.scene.popMatrix();
 
-        // Calculate the translation for the cone to align with the top of the last cylinder
-        const coneTranslationX = 0; // No translation in X-axis
-        const coneTranslationY = translation + this.height * Math.cos(this.cylinders[lastIndex].inclination);
-        const coneTranslationZ = this.height * Math.sin(this.cylinders[lastIndex].inclination);
-
+        // Display the green cone
         this.scene.pushMatrix();
-        this.scene.translate(coneTranslationX, coneTranslationY, coneTranslationZ);
+        this.scene.translate(0, this.numCylinders*this.height, 0);
         this.scene.setDiffuse(0, 1, 0, 0);
-        this.scene.rotate(-Math.PI / 2 + this.cylinders[lastIndex].inclination, 1, 0, 0); // Apply the random inclination
+        this.scene.rotate(-Math.PI / 2, 1, 0, 0); // Apply the random inclination
         this.scene.rotate(-Math.PI / 2, 1, 0, 0); // Rotate cone to align with cylinder
         this.scene.scale(this.radius * 3, this.radius * 3, this.radius * 3); // Scale the cone to match the cylinder
-        this.cone.display(); // Display the cone
+        this.cone.display(); // Display the green cone
         this.scene.popMatrix();
 
+        // Display the yellow cone
         this.scene.pushMatrix();
-        this.scene.translate(coneTranslationX, coneTranslationY, coneTranslationZ);
-        this.scene.setDiffuse(0, 1, 0, 0);
-        this.scene.rotate(-Math.PI / 2 + this.cylinders[lastIndex].inclination, 1, 0, 0); // Apply the random inclination
+        this.scene.translate(0, this.numCylinders*this.height, 0);
+        this.scene.setDiffuse(1, 1, 0, 0); // Set color to yellow
+        this.scene.rotate(-Math.PI / 2, 1, 0, 0); // Apply the random inclination
         this.scene.rotate(Math.PI / 2, 1, 0, 0); // Rotate cone to align with cylinder
         this.scene.scale(this.radius * 3, this.radius * 3, this.radius * 3); // Scale the cone to match the cylinder
-        this.scene.setDiffuse(1,1,0,0);
-        this.cone.display(); // Display the cone
+        this.cone.display(); // Display the yellow cone
         this.scene.popMatrix();
+
+        // Display petals around the cone
+        for (let i = 0; i < this.numPetals; i++) {
+            this.scene.pushMatrix();
+            this.scene.translate(0, this.numCylinders*this.height - 0.7, 0); // Translate petal downwards
+            this.scene.rotate((2 * Math.PI / this.numPetals) * i, 0, 1, 0); // Rotate petal around the cone
+            this.scene.translate(0, this.radius * 3 - 0.7, this.radius * 4); // Translate petal to the correct position, increased separation
+            this.scene.rotate(Math.PI / 8, 1, 0, 0); // Incline petal towards the sky
+            this.scene.scale(2, 2, 2); // Adjust scaling if needed
+            this.scene.setDiffuse(1, 0, 0, 0); // Set petal color
+            this.petals[i].display(); // Display the petal
+            this.scene.popMatrix();
+        }
     }
 }

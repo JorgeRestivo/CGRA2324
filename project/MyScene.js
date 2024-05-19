@@ -90,7 +90,7 @@ export class MyScene extends CGFscene {
         this.panorama.display();
         this.popMatrix();
 
-        this.gl.enable(this.gl.CULL_FACE); // Re-enable culling for other objects
+        //this.gl.enable(this.gl.CULL_FACE); // Re-enable culling for other objects
 
         // Draw primitive objects
         this.pushMatrix();
@@ -105,6 +105,5 @@ export class MyScene extends CGFscene {
         this.flower.display();
         this.popMatrix();
 
-        this.petal.display();
     }
 }
