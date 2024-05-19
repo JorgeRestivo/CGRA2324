@@ -4,19 +4,21 @@ import { MyCone } from './MyCone.js';
 import { MyPetal } from './MyPetal.js';
 
 export class MyFlower extends CGFobject {
-    constructor(scene, slices, stacks, height, radius, x ,z) {
+    constructor(scene, slices, stacks, height, radius, x, z) {
         super(scene);
         this.slices = slices;
         this.stacks = stacks;
         this.height = height;
         this.radius = radius;
-        this.numCylinders = 3; // Number of cylinders to stack
         this.spacing = 0; // Spacing between cylinders
         this.cylinders = [];
-        this.numPetals = 12; // Number of petals
         this.x = x;
         this.z = z;
 
+        // Generate a random number of cylinders within a range
+        this.numCylinders = Math.floor(Math.random() * (4 - 2 + 1)) + 2; // Random number between 1 and 5
+
+        this.numPetals = Math.floor(Math.random() * (15 - 7 + 1)) + 7; // Random number between 7 and 15
 
         // Create instances of MyCylinder for stacking
         for (let i = 0; i < this.numCylinders; i++) {
@@ -43,7 +45,6 @@ export class MyFlower extends CGFobject {
     }
 
     display() {
-
         this.scene.pushMatrix();
         this.scene.translate(this.x, 0, this.z); // Apply translation
 
@@ -65,14 +66,14 @@ export class MyFlower extends CGFobject {
 
         this.scene.pushMatrix();
         this.scene.translate(0, translation, 0);
-        this.scene.rotate(-Math.PI / 2 , 1, 0, 0); // Apply the random inclination
+        this.scene.rotate(-Math.PI / 2, 1, 0, 0); // Apply the random inclination
         this.scene.scale(this.radius, this.radius, this.height);
         this.cylinders[lastIndex].display(); // Display the last cylinder
         this.scene.popMatrix();
 
         // Display the green cone
         this.scene.pushMatrix();
-        this.scene.translate(0, this.numCylinders*this.height, 0);
+        this.scene.translate(0, this.numCylinders * this.height, 0);
         this.scene.setDiffuse(0, 1, 0, 0);
         this.scene.rotate(-Math.PI / 2, 1, 0, 0); // Apply the random inclination
         this.scene.rotate(-Math.PI / 2, 1, 0, 0); // Rotate cone to align with cylinder
@@ -82,7 +83,7 @@ export class MyFlower extends CGFobject {
 
         // Display the yellow cone
         this.scene.pushMatrix();
-        this.scene.translate(0, this.numCylinders*this.height, 0);
+        this.scene.translate(0, this.numCylinders * this.height, 0);
         this.scene.setDiffuse(1, 1, 0, 0); // Set color to yellow
         this.scene.rotate(-Math.PI / 2, 1, 0, 0); // Apply the random inclination
         this.scene.rotate(Math.PI / 2, 1, 0, 0); // Rotate cone to align with cylinder
@@ -93,7 +94,7 @@ export class MyFlower extends CGFobject {
         // Display petals around the cone
         for (let i = 0; i < this.numPetals; i++) {
             this.scene.pushMatrix();
-            this.scene.translate(0, this.numCylinders*this.height , 0); // Translate petal downwards
+            this.scene.translate(0, this.numCylinders * this.height, 0); // Translate petal downwards
             this.scene.rotate((2 * Math.PI / this.numPetals) * i, 0, 1, 0); // Rotate petal around the cone
             this.scene.translate(0, this.radius * 3 - 0.7, this.radius * 4); // Translate petal to the correct position, increased separation
             this.scene.rotate(Math.PI / 5, 1, 0, 0); // Incline petal towards the sky
