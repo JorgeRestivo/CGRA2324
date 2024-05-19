@@ -50,7 +50,7 @@ export class MyGardenRocks extends CGFobject {
             let distance = Math.sqrt(
                 Math.pow(translation[0] - rockSet.translation[0], 2) + Math.pow(translation[2] - rockSet.translation[2], 2)
             );
-            if (distance < scale + 1) { // Assuming max radius of rock set is 1
+            if (distance < scale + 9) { 
                 return true;
             }
         }
