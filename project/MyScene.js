@@ -4,6 +4,7 @@ import { MyPlane } from "./MyPlane.js";
 import { MyStem } from "./MyStem.js";
 import { MyPetal } from "./MyPetal.js";
 import { MyBeeSphere } from "./MyBeeSphere.js";
+import { MyBee } from "./MyBee.js";
 import { MyGarden } from "./MyGarden.js";
 import { MyRock } from "./MyRock.js";
 import { MyRockSet } from "./MyRockSet.js";
@@ -37,7 +38,7 @@ export class MyScene extends CGFscene {
         this.plane = new MyPlane(this, 30);
         this.panorama = new MyPanorama(this, this.panoramatexture);
         this.petal = new MyPetal(this, 4, 6);
-        this.beeSphere = new MyBeeSphere(this,1,1,1);
+        this.bee = new MyBee(this);
         this.stem = new MyStem(this, 16, 20, 10.0, 0.7);
         this.garden = new MyGarden(this,this.numRows,this.numCols);
         this.gardenRocks = new MyGardenRocks(this);
@@ -99,6 +100,11 @@ export class MyScene extends CGFscene {
         // Draw axis
         if (this.displayAxis) this.axis.display();
 
+        this.pushMatrix();
+        this.rotate(-Math.PI/2,0,0,1);
+        this.bee.display();
+        this.popMatrix();
+
         this.gl.disable(this.gl.CULL_FACE); // Disable culling when rendering the sphere
 
         this.pushMatrix();
@@ -127,6 +133,7 @@ export class MyScene extends CGFscene {
             this.gardenRocks.display();
             this.popMatrix();
         }
+
 
     }
 }
