@@ -4,16 +4,18 @@ import { MyCone } from './MyCone.js';
 import { MyPetal } from './MyPetal.js';
 
 export class MyFlower extends CGFobject {
-    constructor(scene, slices, stacks, height, radius, x, z) {
+    constructor(scene, slices, stacks, height, x, z) {
         super(scene);
         this.slices = slices;
         this.stacks = stacks;
         this.height = height;
-        this.radius = radius;
         this.spacing = 0; // Spacing between cylinders
         this.cylinders = [];
         this.x = x;
         this.z = z;
+
+        // Generate a random number between 0.4 and 1.2 for the radius
+        this.radius = Math.random() * (1.2 - 0.4) + 0.4;
 
         // Generate a random number of cylinders within a range
         this.numCylinders = Math.floor(Math.random() * (4 - 2 + 1)) + 2; // Random number between 1 and 5
@@ -33,13 +35,20 @@ export class MyFlower extends CGFobject {
             this.cylinders.push(cylinder);
         }
 
+        // Generate a random radius for the cone between 0.5 and 1.5
+        const coneRadius = Math.random() * (1.5 - 0.5) + 0.5;
+
         // Create a cone for the end of the stem
         this.cone = new MyCone(scene, slices, stacks);
+
+        // Scale the cone to adjust its radius
+        this.scene.scale(coneRadius, coneRadius, coneRadius);
+
 
         // Create instances of MyPetal
         this.petals = [];
         for (let i = 0; i < this.numPetals; i++) {
-            const petal = new MyPetal(scene, radius, radius * 2);
+            const petal = new MyPetal(scene, this.radius, this.radius * 2);
             this.petals.push(petal);
         }
     }

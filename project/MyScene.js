@@ -34,7 +34,6 @@ export class MyScene extends CGFscene {
         this.petal = new MyPetal(this, 4, 6);
         this.beeSphere = new MyBeeSphere(this,1,1,1);
         this.stem = new MyStem(this, 16, 20, 10.0, 0.7);
-        this.flower = new MyFlower(this, 16, 20, 10.0, 0.7);
         this.garden = new MyGarden(this,5,5);
 
         //Objects connected to MyInterface

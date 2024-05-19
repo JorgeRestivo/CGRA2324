@@ -26,7 +26,7 @@ export class MyGarden {
                 // Random z position within spacing
                 const z = Math.random() * spacingZ * zSign + j * spacingZ;
     
-                const flower = new MyFlower(this.scene, 16, 20, 10.0, 0.7, x, z);
+                const flower = new MyFlower(this.scene, 16, 20, 10.0, x, z);
                 this.flowers.push(flower);
             }
         }
