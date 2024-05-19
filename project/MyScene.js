@@ -11,6 +11,8 @@ import { MyGarden } from "./MyGarden.js";
 export class MyScene extends CGFscene {
     constructor() {
         super();
+        this.numRows = 7;
+        this.numCols = 7;
     }
 
     init(application) {
@@ -19,6 +21,7 @@ export class MyScene extends CGFscene {
         this.initCameras();
         this.initLights();
         this.initTextures();
+    
 
         //Background color
         this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -34,13 +37,17 @@ export class MyScene extends CGFscene {
         this.petal = new MyPetal(this, 4, 6);
         this.beeSphere = new MyBeeSphere(this,1,1,1);
         this.stem = new MyStem(this, 16, 20, 10.0, 0.7);
-        this.garden = new MyGarden(this,5,5);
+        this.garden = new MyGarden(this,this.numRows,this.numCols);
 
         //Objects connected to MyInterface
         this.displayAxis = true;
         this.scaleFactor = 1;
 
         this.enableTextures(true);
+    }
+
+    updateGarden() {
+        this.garden.generateGarden(); // Regenerate the garden with new parameters
     }
 
     initTextures() {

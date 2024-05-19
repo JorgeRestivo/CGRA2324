@@ -60,6 +60,7 @@ export class MyFlower extends CGFobject {
 
     }
 
+
     display() {
         this.scene.pushMatrix();
         this.scene.translate(this.x, 0, this.z); // Apply translation
