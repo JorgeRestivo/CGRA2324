@@ -9,7 +9,8 @@ import { MyGarden } from "./MyGarden.js";
 import { MyRock } from "./MyRock.js";
 import { MyRockSet } from "./MyRockSet.js";
 import { MyGardenRocks } from "./MyGardenRocks.js";
-
+import { MyGrass } from "./MyGrass.js"; // Importe a classe MyGrass
+import { MyPollen } from "./MyPollen.js";
 
 export class MyScene extends CGFscene {
     constructor() {
@@ -38,16 +39,20 @@ export class MyScene extends CGFscene {
         this.plane = new MyPlane(this, 30);
         this.panorama = new MyPanorama(this, this.panoramatexture);
         this.petal = new MyPetal(this, 4, 6);
-        this.bee = new MyBee(this);
+        this.bee = new MyBee(this,0,0,0,0);
         this.stem = new MyStem(this, 16, 20, 10.0, 0.7);
         this.garden = new MyGarden(this,this.numRows,this.numCols);
         this.gardenRocks = new MyGardenRocks(this);
+        this.grass = new MyGrass(this, 50, 50, 50, 50); // Create garden with triangular grass blades
+        
+        
 
         //Objects connected to MyInterface
         this.displayAxis = true;
         this.displayGarden = false;
         this.displayRocks = false;
         this.scaleFactor = 1;
+        this.speedFactor = 1;
 
         this.enableTextures(true);
     }
@@ -57,9 +62,9 @@ export class MyScene extends CGFscene {
     }
 
     initTextures() {
-        this.texture = new CGFtexture(this, "images/terrain.jpg");
+        this.texture = new CGFtexture(this, "images/terrain1.webp");
         this.rockTexture = new CGFtexture(this, "textures/rock.jpg");
-        this.panoramatexture = new CGFtexture(this, "images/panorama4.jpg");
+        this.panoramatexture = new CGFtexture(this, "images/panorama1.jpg");
         this.appearance = new CGFappearance(this);
         this.appearance.setTexture(this.texture);
         this.appearance.setTextureWrap('REPEAT', 'REPEAT');
@@ -100,8 +105,12 @@ export class MyScene extends CGFscene {
         // Draw axis
         if (this.displayAxis) this.axis.display();
 
+        const currentTime = performance.now();
+        this.bee.update(currentTime);
+
         this.pushMatrix();
         this.rotate(-Math.PI/2,0,0,1);
+        this.translate(90,0,0);
         this.bee.display();
         this.popMatrix();
 
@@ -110,8 +119,6 @@ export class MyScene extends CGFscene {
         this.pushMatrix();
         this.panorama.display();
         this.popMatrix();
-
-        //this.gl.enable(this.gl.CULL_FACE); // Re-enable culling for other objects
 
         // Draw primitive objects
         this.pushMatrix();
@@ -124,16 +131,49 @@ export class MyScene extends CGFscene {
 
 
         if(this.displayGarden){
+            this.translate(0, -100, 0);
+            this.scale(this.scaleFactor,this.scaleFactor,this.scaleFactor);
             this.garden.display();
         }
 
         if(this.displayRocks){
             this.pushMatrix();
             this.scale(3,2,2.5);
+            this.scale(this.scaleFactor,this.scaleFactor,this.scaleFactor);
             this.gardenRocks.display();
             this.popMatrix();
         }
 
+        this.pushMatrix();
+        this.rotate(Math.PI,Math.PI,Math.PI,0);
+        this.translate(-100, -100, -100); // Center the garden
+        this.setDiffuse(0,1,0,0);
+        this.grass.display();
+        this.popMatrix();
 
+
+        
+    }
+    checkKeys() {
+        var text = "Keys pressed: ";
+        var keysPressed = false;
+
+        if (this.gui.isKeyPressed("KeyW")) {
+            text += " W ";
+            keysPressed = true;
+        }
+
+        if (this.gui.isKeyPressed("KeyS")) {
+            text += " S ";
+            keysPressed = true;
+        }
+
+        if (keysPressed)
+            console.log(text);
+    }
+
+    update(t) {
+        this.checkKeys(); // Check for pressed keys
+        // Other update logic...
     }
 }

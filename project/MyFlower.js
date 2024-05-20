@@ -2,6 +2,7 @@ import { CGFobject, CGFappearance, CGFtexture } from '../lib/CGF.js';
 import { MyCylinder } from './MyCylinder.js';
 import { MyCone } from './MyCone.js';
 import { MyPetal } from './MyPetal.js';
+import { MyPollen } from './MyPollen.js';
 
 export class MyFlower extends CGFobject {
     constructor(scene, slices, stacks, height, x, z) {
@@ -142,5 +143,23 @@ export class MyFlower extends CGFobject {
         }
 
         this.scene.popMatrix(); // Pop the matrix for the flower's translation
+
+        // Place MyPollen instances at the center of the flower with random rotations
+        const pollenX = this.x; // X-coordinate of the flower
+        const pollenZ = this.z; // Z-coordinate of the flower
+        const pollenY = this.height;
+
+        this.scene.pushMatrix();
+        this.scene.translate(pollenX, pollenY, pollenZ); // Translate to the center of the flower
+
+        // Apply a random rotation to each MyPollen instance
+        const randomRotation = Math.random() * 2 * Math.PI; // Random angle between 0 and 2*PI
+        this.scene.rotate(randomRotation, 0, 1, 0); // Rotate around the Y-axis
+
+        // Create and display MyPollen instance
+        const myPollen = new MyPollen(this.scene, /* parameters */);
+        myPollen.display();
+
+        this.scene.popMatrix(); // Pop the matrix for the MyPollen instance
     }
 }
