@@ -51,6 +51,8 @@ export class MyScene extends CGFscene {
         this.displayAxis = true;
         this.displayGarden = false;
         this.displayRocks = false;
+        this.displayBee = false;
+        this.displayGrass = false;
         this.scaleFactor = 1;
         this.speedFactor = 1;
 
@@ -108,11 +110,13 @@ export class MyScene extends CGFscene {
         const currentTime = performance.now();
         this.bee.update(currentTime);
 
-        this.pushMatrix();
-        this.rotate(-Math.PI/2,0,0,1);
-        this.translate(90,0,0);
-        this.bee.display();
-        this.popMatrix();
+        if(this.displayBee){
+            this.pushMatrix();
+            this.rotate(-Math.PI/2,0,0,1);
+            this.translate(90,0,0);
+            this.bee.display();
+            this.popMatrix();
+        }
 
         this.gl.disable(this.gl.CULL_FACE); // Disable culling when rendering the sphere
 
@@ -131,7 +135,7 @@ export class MyScene extends CGFscene {
 
 
         if(this.displayGarden){
-            this.translate(0, -100, 0);
+            this.translate(0, -80, 0);
             this.scale(this.scaleFactor,this.scaleFactor,this.scaleFactor);
             this.garden.display();
         }
@@ -144,13 +148,14 @@ export class MyScene extends CGFscene {
             this.popMatrix();
         }
 
-        this.pushMatrix();
-        this.rotate(Math.PI,Math.PI,Math.PI,0);
-        this.translate(-100, -100, -100); // Center the garden
-        this.setDiffuse(0,1,0,0);
-        this.grass.display();
-        this.popMatrix();
-
+        if(this.displayGrass){
+            this.pushMatrix();
+            this.rotate(Math.PI,Math.PI,Math.PI,0);
+            this.translate(-100, -100, -100); // Center the garden
+            this.setDiffuse(0,1,0,0);
+            this.grass.display();
+            this.popMatrix();
+        }
 
         
     }
