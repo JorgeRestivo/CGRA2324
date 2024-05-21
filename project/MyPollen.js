@@ -1,44 +1,36 @@
-import { MySphere } from './MySphere.js';
 import { CGFobject, CGFappearance, CGFtexture } from '../lib/CGF.js';
+import { MyBeeSphere } from './MyBeeSphere.js';
 
-export class MyPollen extends MySphere {
+export class MyPollen extends CGFobject {
     constructor(scene, slices, stacks, radius) {
-        super(scene, slices, stacks, radius);
+        super(scene);
 
-        // Apply different scale factors to Y coordinate for the two hemispheres
-        this.scaleFactorTop = 1.5; // Larger scale factor for the top hemisphere
-        this.scaleFactorBottom = 0.5; // Smaller scale factor for the bottom hemisphere
+        // Create the bee sphere
+        this.pollen = new MyBeeSphere(scene, slices, stacks, radius);
+        this.scene = scene;
 
-        this.texture = new CGFtexture(scene, 'textures/pollen.jpg');
-
-        // Create an appearance with the orange color and the provided texture
-        this.appearance = new CGFappearance(scene);
-        this.appearance.setAmbient(1, 0.5, 0); // Orange color
+        // Load and set the texture
+        this.texture = new CGFtexture(this.scene, "textures/pollen.jpg");
+        this.appearance = new CGFappearance(this.scene);
         this.appearance.setTexture(this.texture);
-        // Initialize buffers with the modified vertices, normals, and texture coordinates
-        this.initBuffers();
+
+        // Set the random rotation angle once
+        this.pollenRandomRotation = Math.random() * 2 * Math.PI; // Random angle between 0 and 2*PI
     }
 
-    initBuffers() {
-        super.initBuffers();
-
-        // Apply scale factors to Y coordinate for the two hemispheres
-        for (let i = 0; i < this.vertices.length; i += 3) {
-            // Apply different scale factors based on Y coordinate
-            if (this.vertices[i + 1] >= 0) {
-                // Top hemisphere
-                this.vertices[i + 1] *= this.scaleFactorTop;
-            } else {
-                // Bottom hemisphere
-                this.vertices[i + 1] *= this.scaleFactorBottom;
-            }
-        }
-    }
     display() {
-        // Apply the material before displaying the pollen
+        this.scene.pushMatrix();
+
+        // Apply the random rotation
+        this.scene.rotate(this.pollenRandomRotation, 0, 1, 0); // Rotate the pollen around its center along the Y-axis
+        this.scene.scale(1.6, 1, 1);
+
+        // Apply the appearance
         this.appearance.apply();
 
-        // Display the pollen using the inherited display method
-        super.display();
+        // Display the bee sphere
+        this.pollen.display();
+
+        this.scene.popMatrix();
     }
 }

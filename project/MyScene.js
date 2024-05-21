@@ -41,6 +41,7 @@ export class MyScene extends CGFscene {
         this.garden = new MyGarden(this,this.numRows,this.numCols);
         this.gardenRocks = new MyGardenRocks(this);
         this.grass = new MyGrass(this, 50, 50, 50, 50); // Create garden with triangular grass blades
+        this.pollen = new MyPollen(this,10,10,0.3);
         
         
 
@@ -151,6 +152,8 @@ export class MyScene extends CGFscene {
             this.grass.display();
             this.popMatrix();
         }
+
+        this.pollen.display();
 
         
     }

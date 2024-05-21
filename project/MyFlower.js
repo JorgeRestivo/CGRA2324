@@ -45,6 +45,8 @@ export class MyFlower extends CGFobject {
         // Create a cone for the end of the stem
         this.cone = new MyCone(scene, slices, stacks);
 
+        this.pollen = new MyPollen(this.scene, 10, 10, 0.3);
+
         // Scale the cone to adjust its radius
         this.scene.scale(coneRadius, coneRadius, coneRadius);
 
@@ -59,18 +61,15 @@ export class MyFlower extends CGFobject {
             this.petals.push(petal);
         }
 
-
         this.texture1 = new CGFtexture(scene, 'textures/receptacle.jpg');
         this.appearance1 = new CGFappearance(scene);
         this.appearance1.setTexture(this.texture1);
-
 
         this.texture2 = new CGFtexture(scene, 'textures/stem.jpg');
         this.appearance2 = new CGFappearance(scene);
         this.appearance2.setTexture(this.texture2);
 
     }
-
 
     display() {
         this.scene.pushMatrix();
@@ -104,7 +103,6 @@ export class MyFlower extends CGFobject {
         const coneTranslationX = 0; // No translation in X-axis
         const coneTranslationY = translation + this.height * Math.cos(this.cylinders[lastIndex].inclination);
         const coneTranslationZ = this.height * Math.sin(this.cylinders[lastIndex].inclination);
-        
 
         // Display the green cone
         this.scene.pushMatrix();
@@ -119,11 +117,10 @@ export class MyFlower extends CGFobject {
         // Display the yellow cone
         this.scene.pushMatrix();
         this.scene.translate(coneTranslationX, coneTranslationY, coneTranslationZ);
-        //this.scene.setDiffuse(1, 1, 0, 0); // Set color to yellow
         this.scene.rotate(-Math.PI / 2 + this.cylinders[lastIndex].inclination, 1, 0, 0); // Apply the random inclination
         this.scene.rotate(Math.PI / 2, 1, 0, 0); // Rotate cone to align with cylinder
         this.scene.scale(this.radius * 3, this.radius * 3, this.radius * 3); // Scale the cone to match the cylinder
-        this.scene.setDiffuse(0,0,0,0);
+        this.scene.setDiffuse(0, 0, 0, 0);
         this.appearance1.apply();
         this.cone.display(); // Display the yellow cone
         this.scene.popMatrix();
@@ -137,29 +134,26 @@ export class MyFlower extends CGFobject {
             this.scene.translate(0, this.radius * 3 - 0.7, this.radius * 4); // Translate petal to the correct position, increased separation
             this.scene.rotate(Math.PI / 5, 1, 0, 0); // Incline petal towards the sky
             this.scene.scale(2.5, 2, 2); // Adjust scaling if needed
-            this.scene.setDiffuse(1,1,1,1);
+            this.scene.setDiffuse(1, 1, 1, 1);
             this.petals[i].display(); // Display the petal
             this.scene.popMatrix();
         }
 
-        this.scene.popMatrix(); // Pop the matrix for the flower's translation
-
-        // Place MyPollen instances at the center of the flower with random rotations
-        const pollenX = this.x; // X-coordinate of the flower
-        const pollenZ = this.z; // Z-coordinate of the flower
-        const pollenY = this.height;
-
         this.scene.pushMatrix();
-        this.scene.translate(pollenX, pollenY, pollenZ); // Translate to the center of the flower
+        this.scene.translate(coneTranslationX, coneTranslationY, coneTranslationZ);
+        this.scene.rotate(-Math.PI / 2 + this.cylinders[lastIndex].inclination, 1, 0, 0); // Apply the random inclination
+        this.scene.rotate(Math.PI / 2, 1, 0, 0); // Rotate cone to align with cylinder
 
-        // Apply a random rotation to each MyPollen instance
-        const randomRotation = Math.random() * 2 * Math.PI; // Random angle between 0 and 2*PI
-        this.scene.rotate(randomRotation, 0, 1, 0); // Rotate around the Y-axis
+        // Translate upwards from the center of the flower to the top of the yellow cone
+        const pollenOffsetY = this.radius * 2 * 1.5; // Offset to position the pollen on top of the yellow cone
+        this.scene.translate(0, pollenOffsetY, 0);
 
         // Create and display MyPollen instance
-        const myPollen = new MyPollen(this.scene, /* parameters */);
-        myPollen.display();
+        const myPollen = new MyPollen(this.scene, 10, 10, 0.3);
+        this.pollen.display();
 
         this.scene.popMatrix(); // Pop the matrix for the MyPollen instance
+
+        this.scene.popMatrix(); // Pop the matrix for the flower's translation
     }
 }
