@@ -8,6 +8,7 @@ import { MyGarden } from "./MyGarden.js";
 import { MyGardenRocks } from "./MyGardenRocks.js";
 import { MyGrass } from "./MyGrass.js"; // Importe a classe MyGrass
 import { MyPollen } from "./MyPollen.js";
+import { MyHive } from "./MyHive.js";
 
 export class MyScene extends CGFscene {
     constructor() {
@@ -42,6 +43,7 @@ export class MyScene extends CGFscene {
         this.gardenRocks = new MyGardenRocks(this);
         this.grass = new MyGrass(this, 50, 50, 50, 50); // Create garden with triangular grass blades
         this.pollen = new MyPollen(this,10,10,0.3);
+        this.hive = new MyHive(this);
         
         
 
@@ -153,8 +155,6 @@ export class MyScene extends CGFscene {
             this.popMatrix();
         }
 
-        this.pollen.display();
-
-        
+        this.hive.display();
     }
 }
