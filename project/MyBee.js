@@ -31,38 +31,12 @@ export class MyBee {
         
         this.position = { x: x, y: y, z: z };
         this.orientation = orientation;
-        this.velocity = { x: 0, y: 0, z: 0 };
-        this.speed = 0.1; // Speed of the bee
     }
 
     update(t) {
         this.time = t / 5000; // Convert time to seconds
-
-        // Process keyboard input for movement
-        if (this.scene.gui.isKeyPressed("KeyW")) {
-            this.position.z -= this.speed; // Move forward
-        }
-        if (this.scene.gui.isKeyPressed("KeyS")) {
-            this.position.z += this.speed; // Move backward
-        }
-        if (this.scene.gui.isKeyPressed("KeyA")) {
-            this.position.x -= this.speed; // Move left
-        }
-        if (this.scene.gui.isKeyPressed("KeyD")) {
-            this.position.x += this.speed; // Move right
-        }
-        if (this.scene.gui.isKeyPressed("KeyQ")) {
-            this.position.y -= this.speed; // Move down
-        }
-        if (this.scene.gui.isKeyPressed("KeyE")) {
-            this.position.y += this.speed; // Move up
-        }
-        this.position.x += this.velocity.x * t;
-        this.position.y += this.velocity.y * t;
-        this.position.z += this.velocity.z * t;
     }
     
-
     display() {
         // Calculate oscillation and wing flap angles
         const oscillationAngle = Math.sin(2 * Math.PI * this.oscillationFrequency * this.time) * 0.2;
@@ -74,6 +48,9 @@ export class MyBee {
         this.scene.rotate(this.orientation, 0, 1, 0); // Rotate around Y axis
         // Apply the vertical oscillation
         this.scene.translate(0, oscillationAngle, 0);
+
+        this.scene.rotate(Math.PI / 2, 0, 0, -1);
+        this.scene.rotate(Math.PI / 2, 1, 0, 0);
 
         // Draw head
         this.scene.pushMatrix();
@@ -195,34 +172,5 @@ export class MyBee {
         this.scene.popMatrix();
 
         this.scene.popMatrix();
-    }
-    turn(angle) {
-        // Update orientation
-        this.orientation += angle;
-    
-        // Update velocity direction while maintaining the same magnitude
-        // (assuming we're only rotating around the Z axis)
-        const currentSpeed = Math.sqrt(this.velocity.x ** 2 + this.velocity.y ** 2);
-        const newOrientation = this.orientation + angle;
-        this.velocity.x = currentSpeed * Math.cos(newOrientation);
-        this.velocity.y = currentSpeed * Math.sin(newOrientation);
-    }
-    
-
-    
-    accelerate(value) {
-        // Increase or decrease velocity magnitude while keeping the same direction
-        const currentSpeed = Math.sqrt(this.velocity.x ** 2 + this.velocity.z ** 2);
-        const newSpeed = Math.max(0, currentSpeed + value); // Ensure speed doesn't go negative
-        const directionX = Math.sin(this.orientation);
-        const directionZ = Math.cos(this.orientation);
-        this.velocity.x = newSpeed * directionX;
-        this.velocity.z = newSpeed * directionZ;
-    }
-    reset() {
-        // Reset position, orientation, and velocity to initial values
-        this.position = { x: 0, y: 0, z: 0 };
-        this.orientation = 0;
-        this.velocity = { x: 0, y: 0, z: 0 };
     }
 }

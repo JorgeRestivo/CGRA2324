@@ -3,11 +3,8 @@ import { MyPanorama } from "./MyPanorama.js";
 import { MyPlane } from "./MyPlane.js";
 import { MyStem } from "./MyStem.js";
 import { MyPetal } from "./MyPetal.js";
-import { MyBeeSphere } from "./MyBeeSphere.js";
-import { MyBee } from "./MyBee.js";
+import { MyMovement } from "./MyMovement.js";
 import { MyGarden } from "./MyGarden.js";
-import { MyRock } from "./MyRock.js";
-import { MyRockSet } from "./MyRockSet.js";
 import { MyGardenRocks } from "./MyGardenRocks.js";
 import { MyGrass } from "./MyGrass.js"; // Importe a classe MyGrass
 import { MyPollen } from "./MyPollen.js";
@@ -39,7 +36,7 @@ export class MyScene extends CGFscene {
         this.plane = new MyPlane(this, 30);
         this.panorama = new MyPanorama(this, this.panoramatexture);
         this.petal = new MyPetal(this, 4, 6);
-        this.bee = new MyBee(this,0,0,0,0);
+        this.bee = new MyMovement(this,0,0,0,0);
         this.stem = new MyStem(this, 16, 20, 10.0, 0.7);
         this.garden = new MyGarden(this,this.numRows,this.numCols);
         this.gardenRocks = new MyGardenRocks(this);
@@ -112,8 +109,6 @@ export class MyScene extends CGFscene {
 
         if(this.displayBee){
             this.pushMatrix();
-            this.rotate(-Math.PI/2,0,0,1);
-            this.translate(90,0,0);
             this.bee.display();
             this.popMatrix();
         }
@@ -158,27 +153,5 @@ export class MyScene extends CGFscene {
         }
 
         
-    }
-    checkKeys() {
-        var text = "Keys pressed: ";
-        var keysPressed = false;
-
-        if (this.gui.isKeyPressed("KeyW")) {
-            text += " W ";
-            keysPressed = true;
-        }
-
-        if (this.gui.isKeyPressed("KeyS")) {
-            text += " S ";
-            keysPressed = true;
-        }
-
-        if (keysPressed)
-            console.log(text);
-    }
-
-    update(t) {
-        this.checkKeys(); // Check for pressed keys
-        // Other update logic...
     }
 }
