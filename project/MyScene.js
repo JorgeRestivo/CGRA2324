@@ -9,7 +9,6 @@ import { MyGardenRocks } from "./MyGardenRocks.js";
 import { MyGrass } from "./MyGrass.js"; // Importe a classe MyGrass
 import { MyPollen } from "./MyPollen.js";
 import { MyHive } from "./MyHive.js";
-import { MyBlade } from "./MyBlade.js";
 
 export class MyScene extends CGFscene {
     constructor() {
@@ -46,9 +45,6 @@ export class MyScene extends CGFscene {
         this.pollen = new MyPollen(this,10,10,0.3);
         this.hive = new MyHive(this);
 
-        this.blade = new MyBlade(this);
-        
-
         this.displayAxis = true;
         this.displayGarden = false;
         this.displayRocks = false;
@@ -62,12 +58,8 @@ export class MyScene extends CGFscene {
 
         this.windStrength = 0.8;
         this.windAngle = 0;
-
-        // set the scene update period in milliseconds
         this.setUpdatePeriod(50);
-
-        // set current time in milliseconds
-        this.appStartTime = Date.now();
+        this.appStartTime = performance.now();
     }
 
     updateGarden() {
@@ -75,7 +67,7 @@ export class MyScene extends CGFscene {
     }
 
     initTextures() {
-        this.texture = new CGFtexture(this, "images/terrain1.webp");
+        this.texture = new CGFtexture(this, "images/grass.jpeg");
         this.rockTexture = new CGFtexture(this, "textures/rock.jpg");
         this.panoramatexture = new CGFtexture(this, "images/panorama1.jpg");
         this.appearance = new CGFappearance(this);
@@ -155,7 +147,7 @@ export class MyScene extends CGFscene {
         if(this.displayGrass){
             this.pushMatrix();
             //this.rotate(Math.PI,Math.PI,Math.PI,0);
-            //this.translate(-100, -100, -100); // Center the garden
+            this.translate(0, -100, 0); // Center the garden
             this.setDiffuse(0,1,0,0);
             this.grass.display();
             this.popMatrix();
@@ -182,9 +174,7 @@ export class MyScene extends CGFscene {
 
 
     update(time) {
-
         let timeSinceAppStart = (time - this.appStartTime) / 1000.0;
-        this.grass.update(time, this.windAngle, this.windStrength);
-
-      } 
+        this.grass.update(timeSinceAppStart, this.windAngle, this.windStrength);
+    }
 }
