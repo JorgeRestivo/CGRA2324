@@ -149,6 +149,7 @@ export class MyScene extends CGFscene {
             //this.rotate(Math.PI,Math.PI,Math.PI,0);
             this.translate(0, -100, 0); // Center the garden
             this.setDiffuse(0,1,0,0);
+            this.scale(10,10,10);
             this.grass.display();
             this.popMatrix();
         }

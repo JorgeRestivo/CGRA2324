@@ -45,7 +45,7 @@ export class MyGrass extends CGFobject {
     }
 
     display() {
-        const currentTime = (performance.now() - this.scene.appStartTime) / 1000.0; // Get current time in seconds
+        const currentTime = (performance.now() - this.scene.appStartTime) / 1000.0 *4; // Get current time in seconds
         for (let i = 0; i < this.numBlades; i++) {
             this.blades[i].display(currentTime); // Pass current time to blade display
         }
