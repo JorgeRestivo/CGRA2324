@@ -9,6 +9,7 @@ import { MyGardenRocks } from "./MyGardenRocks.js";
 import { MyGrass } from "./MyGrass.js"; // Importe a classe MyGrass
 import { MyPollen } from "./MyPollen.js";
 import { MyHive } from "./MyHive.js";
+import { MyBlade } from "./MyBlade.js";
 
 export class MyScene extends CGFscene {
     constructor() {
@@ -41,9 +42,11 @@ export class MyScene extends CGFscene {
         this.stem = new MyStem(this, 16, 20, 10.0, 0.7);
         this.garden = new MyGarden(this,this.numRows,this.numCols);
         this.gardenRocks = new MyGardenRocks(this);
-        this.grass = new MyGrass(this, 50, 50, 50, 50); // Create garden with triangular grass blades
+        this.grass = new MyGrass(this, 50); // Create garden with triangular grass blades
         this.pollen = new MyPollen(this,10,10,0.3);
         this.hive = new MyHive(this);
+
+        this.blade = new MyBlade(this);
         
 
         this.displayAxis = true;
@@ -142,8 +145,8 @@ export class MyScene extends CGFscene {
 
         if(this.displayGrass){
             this.pushMatrix();
-            this.rotate(Math.PI,Math.PI,Math.PI,0);
-            this.translate(-100, -100, -100); // Center the garden
+            //this.rotate(Math.PI,Math.PI,Math.PI,0);
+            //this.translate(-100, -100, -100); // Center the garden
             this.setDiffuse(0,1,0,0);
             this.grass.display();
             this.popMatrix();
@@ -164,6 +167,7 @@ export class MyScene extends CGFscene {
             this.garden.display();
             this.popMatrix();
         }
+
         
     }
 }

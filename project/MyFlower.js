@@ -14,6 +14,7 @@ export class MyFlower extends CGFobject {
         this.cylinders = [];
         this.x = x;
         this.z = z;
+        this.hasPollen = true; // Indicate whether the flower has pollen
 
         // Generate a random number between 0.4 and 1.2 for the radius
         this.radius = Math.random() * (1.2 - 0.4) + 0.4;
@@ -138,22 +139,29 @@ export class MyFlower extends CGFobject {
             this.petals[i].display(); // Display the petal
             this.scene.popMatrix();
         }
+        
 
-        this.scene.pushMatrix();
-        this.scene.translate(coneTranslationX, coneTranslationY, coneTranslationZ);
-        this.scene.rotate(-Math.PI / 2 + this.cylinders[lastIndex].inclination, 1, 0, 0); // Apply the random inclination
-        this.scene.rotate(Math.PI / 2, 1, 0, 0); // Rotate cone to align with cylinder
+        if(this.hasPollen){
+            this.scene.pushMatrix();
+            this.scene.translate(coneTranslationX, coneTranslationY, coneTranslationZ);
+            this.scene.rotate(-Math.PI / 2 + this.cylinders[lastIndex].inclination, 1, 0, 0); // Apply the random inclination
+            this.scene.rotate(Math.PI / 2, 1, 0, 0); // Rotate cone to align with cylinder
 
-        // Translate upwards from the center of the flower to the top of the yellow cone
-        const pollenOffsetY = this.radius * 2 * 1.5; // Offset to position the pollen on top of the yellow cone
-        this.scene.translate(0, pollenOffsetY, 0);
+            // Translate upwards from the center of the flower to the top of the yellow cone
+            const pollenOffsetY = this.radius * 2 * 1.5; // Offset to position the pollen on top of the yellow cone
+            this.scene.translate(0, pollenOffsetY, 0);
 
-        // Create and display MyPollen instance
-        const myPollen = new MyPollen(this.scene, 10, 10, 0.3);
-        this.pollen.display();
+            // Create and display MyPollen instance
+            const myPollen = new MyPollen(this.scene, 10, 10, 0.3);
+            this.pollen.display();
 
-        this.scene.popMatrix(); // Pop the matrix for the MyPollen instance
+            this.scene.popMatrix(); // Pop the matrix for the MyPollen instance
 
-        this.scene.popMatrix(); // Pop the matrix for the flower's translation
+            this.scene.popMatrix(); // Pop the matrix for the flower's translation
+        }
+        
+    }
+    collectPollen() {
+        this.hasPollen = false; // Set pollen state to false to indicate it has been collected
     }
 }

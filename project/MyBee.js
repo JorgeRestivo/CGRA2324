@@ -1,6 +1,7 @@
 import { CGFtexture, CGFappearance } from "../lib/CGF.js";
 import { MyBeeSphere } from "./MyBeeSphere.js";
 import { MyCylinder } from "./MyCylinder.js";
+import { MyPollen } from "./MyPollen.js";
 
 export class MyBee {
     constructor(scene, x = 0, y = 0, z = 0, orientation = 0) {
@@ -28,6 +29,9 @@ export class MyBee {
         this.oscillationFrequency = 1.0; // 1 Hz for the up and down motion
         this.wingFlapFrequency = 10.0; // 10 Hz for the wing flapping
         this.time = 0; // Keep track of the time
+
+        this.pollen = new MyPollen(scene); // Add pollen reference
+        this.carryingPollen = false; // Bee starts without pollen
         
         this.position = { x: x, y: y, z: z };
         this.orientation = orientation;
@@ -171,6 +175,23 @@ export class MyBee {
         this.cylinder.display();
         this.scene.popMatrix();
 
+        // Draw pollen if bee is carrying it
+        if (this.carryingPollen) {
+            this.scene.pushMatrix();
+            this.scene.translate(0, -0.5, 0); // Adjust the position of the pollen
+            this.pollen.display();
+            this.scene.popMatrix();
+        }
+
         this.scene.popMatrix();
+    }
+
+     // New methods to manage pollen state
+     collectPollen() {
+        this.carryingPollen = true;
+    }
+
+    dropPollen() {
+        this.carryingPollen = false;
     }
 }

@@ -36,7 +36,34 @@ export class MyGarden {
                 this.flowers.push(flower);
             }
         }
-    }    
+    }
+
+    getPollenPosition() {
+        const pollenPositions = [];
+        for (const flower of this.flowers) {
+            if (flower.hasPollen) {
+                // Calculate the position of the pollen based on the flower's position and the offsets applied to the pollen on the yellow cone
+                const pollenOffsetY = flower.radius * 2 * 1.5; // Offset to position the pollen on top of the yellow cone
+                const pollenPosition = {
+                    x: flower.x,
+                    y: pollenOffsetY,
+                    z: flower.z
+                };
+                pollenPositions.push(pollenPosition);
+            }
+        }
+        return pollenPositions;
+    }
+    
+
+    collectPollenAtPosition(position) {
+        for (const flower of this.flowers) {
+            if (flower.position.x === position.x && flower.position.z === position.z && flower.hasPollen) {
+                flower.collectPollen();
+                break;
+            }
+        }
+    }   
     
 
     display() {

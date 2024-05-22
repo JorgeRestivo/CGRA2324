@@ -1,46 +1,32 @@
 import { CGFobject } from '../../lib/CGF.js';
+import { MyBlade } from './MyBlade.js';
 
 export class MyGrass extends CGFobject {
-    constructor(scene, width, length, numRows, numCols) {
+    constructor(scene, numBlades) {
         super(scene);
-        this.width = width;
-        this.length = length;
-        this.numRows = numRows;
-        this.numCols = numCols;
-        this.initBuffers();
+        this.numBlades = numBlades;
+
+        this.initGrass();
     }
 
-    initBuffers() {
-        this.vertices = [];
-        this.indices = [];
-        
-        const triangleWidth = this.width / this.numCols;
-        const triangleLength = this.length / this.numRows;
+    initGrass() {
+        this.blades = [];
 
-        for (let i = 0; i < this.numRows; i++) {
-            for (let j = 0; j < this.numCols; j++) {
-                const z1 = j * triangleWidth;
-                const y1 = i * triangleLength;
-                const z2 = (j + 1) * triangleWidth;
-                const y2 = i * triangleLength;
-                const z3 = j * triangleWidth;
-                const y3 = (i + 1) * triangleLength;
+        // Create blades of grass with random positions
+        for (let i = 0; i < this.numBlades; i++) {
+            // Generate random x and z coordinates within a certain range
+            const x = Math.random() * 10 - 5; // Random x coordinate between -5 and 5
+            const z = Math.random() * 10 - 5; // Random z coordinate between -5 and 5
 
-                // Random height between 0.5 and 2.0
-                const minHeight = 0.5;
-                const maxHeight = 2.0;
-                const x = Math.random() * (maxHeight - minHeight) + minHeight;
-
-                this.vertices.push(x, y1, z1);
-                this.vertices.push(x, y2, z2);
-                this.vertices.push(x, y3, z3);
-
-                const startIndex = (i * this.numCols + j) * 3;
-                this.indices.push(startIndex+2, startIndex , startIndex+1 );
-            }
+            const blade = new MyBlade(this.scene, x, z);
+            this.blades.push(blade);
         }
+    }
 
-        this.primitiveType = this.scene.gl.TRIANGLES;
-        this.initGLBuffers();
+    display() {
+        // Display each blade of grass
+        for (let i = 0; i < this.numBlades; i++) {
+            this.blades[i].display();
+        }
     }
 }
