@@ -24,6 +24,7 @@ export class MyPollen extends CGFobject {
         // Apply the random rotation
         this.scene.rotate(this.pollenRandomRotation, 0, 1, 0); // Rotate the pollen around its center along the Y-axis
         this.scene.scale(1.6, 1, 1);
+        this.scene.scale(2,2,2);
 
         // Apply the appearance
         this.appearance.apply();
