@@ -45,14 +45,13 @@ export class MyScene extends CGFscene {
         this.pollen = new MyPollen(this,10,10,0.3);
         this.hive = new MyHive(this);
         
-        
 
-        //Objects connected to MyInterface
         this.displayAxis = true;
         this.displayGarden = false;
         this.displayRocks = false;
         this.displayBee = false;
         this.displayGrass = false;
+        this.displayHive = false;
         this.scaleFactor = 1;
         this.speedFactor = 1;
 
@@ -132,15 +131,10 @@ export class MyScene extends CGFscene {
         this.popMatrix();
 
 
-        if(this.displayGarden){
-            this.translate(0, -80, 0);
-            this.scale(this.scaleFactor,this.scaleFactor,this.scaleFactor);
-            this.garden.display();
-        }
-
         if(this.displayRocks){
             this.pushMatrix();
             this.scale(3,2,2.5);
+            this.translate(0, -40, 0);
             this.scale(this.scaleFactor,this.scaleFactor,this.scaleFactor);
             this.gardenRocks.display();
             this.popMatrix();
@@ -155,6 +149,21 @@ export class MyScene extends CGFscene {
             this.popMatrix();
         }
 
-        this.hive.display();
+        if(this.displayHive){
+            this.pushMatrix();
+            this.scale(20,20,20);
+            this.translate(5,-4,0);
+            this.rotate(Math.PI/2,0,-1,0);
+            this.hive.display();
+            this.popMatrix();
+        }
+        if(this.displayGarden){
+            this.pushMatrix();
+            this.translate(0, -80, 0);
+            this.scale(this.scaleFactor,this.scaleFactor,this.scaleFactor);
+            this.garden.display();
+            this.popMatrix();
+        }
+        
     }
 }

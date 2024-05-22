@@ -28,6 +28,7 @@ export class MyInterface extends CGFinterface {
         this.gui.add(this.scene, 'displayRocks').name('Display Rocks');
         this.gui.add(this.scene, 'displayBee').name('Display Bee');
         this.gui.add(this.scene, 'displayGrass').name('Display Grass');
+        this.gui.add(this.scene, 'displayHive').name('Display Hive');
 
         // Add controls for numRows and numCols
         const numRowsControl = gardenFolder.add(this.scene, 'numRows', 5, 15).step(1).name('Number of Rows');

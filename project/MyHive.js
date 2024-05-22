@@ -33,10 +33,17 @@ export class MyHive extends CGFobject {
         this.cube.display();
         this.scene.popMatrix();
 
+        this.scene.pushMatrix();
+        this.scene.scale(this.width, this.height, this.depth);
+        this.scene.translate(0, this.height*0.5, 0); 
+        this.woodAppearance.apply();
+        this.cube.display();
+        this.scene.popMatrix();
+
         // Roof
         this.scene.pushMatrix();
-        this.scene.translate(0, this.height*0.5, 0); // Position at the height of the cube
-        this.scene.scale(this.width, this.width / 2, this.depth);
+        this.scene.translate(0, this.height*1.2, 0); // Position at the height of the last cube
+        this.scene.scale(this.width*1.2, this.width / 2*1.2, this.depth*1.2);
         this.roofAppearance.apply();
         this.roof.display();
         this.scene.popMatrix();
