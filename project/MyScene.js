@@ -42,7 +42,7 @@ export class MyScene extends CGFscene {
         this.stem = new MyStem(this, 16, 20, 10.0, 0.7);
         this.garden = new MyGarden(this,this.numRows,this.numCols);
         this.gardenRocks = new MyGardenRocks(this);
-        this.grass = new MyGrass(this, 50); // Create garden with triangular grass blades
+        this.grass = new MyGrass(this, 50, this.windAngle, this.windStrength);
         this.pollen = new MyPollen(this,10,10,0.3);
         this.hive = new MyHive(this);
 
@@ -59,6 +59,15 @@ export class MyScene extends CGFscene {
         this.speedFactor = 1;
 
         this.enableTextures(true);
+
+        this.windStrength = 0.8;
+        this.windAngle = 0;
+
+        // set the scene update period in milliseconds
+        this.setUpdatePeriod(50);
+
+        // set current time in milliseconds
+        this.appStartTime = Date.now();
     }
 
     updateGarden() {
@@ -170,4 +179,12 @@ export class MyScene extends CGFscene {
 
         
     }
+
+
+    update(time) {
+
+        let timeSinceAppStart = (time - this.appStartTime) / 1000.0;
+        this.grass.update(time, this.windAngle, this.windStrength);
+
+      } 
 }

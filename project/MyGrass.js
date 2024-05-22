@@ -2,9 +2,11 @@ import { CGFobject } from '../../lib/CGF.js';
 import { MyBlade } from './MyBlade.js';
 
 export class MyGrass extends CGFobject {
-    constructor(scene, numBlades) {
+    constructor(scene, numBlades, windAngle, windStrength) {
         super(scene);
         this.numBlades = numBlades;
+        this.windAngle = windAngle;
+        this.windStrength = windStrength;
 
         this.initGrass();
     }
@@ -28,5 +30,12 @@ export class MyGrass extends CGFobject {
         for (let i = 0; i < this.numBlades; i++) {
             this.blades[i].display();
         }
+    }
+
+    update(timeSinceAppStart, windAngle, windStrength) {
+        this.windAngle = windAngle;
+        this.windStrength = windStrength;
+        // Optionally, you can update each blade of grass with wind parameters here
+        // You may need to add an update function to MyBlade to handle this
     }
 }
